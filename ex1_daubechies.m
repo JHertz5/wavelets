@@ -70,4 +70,4 @@ for mIndex = m_degree+1
     xlabel('time (s/64)')
 end
  
-save('reporudctionCoefficients.mat', 'c_coefficients')
+save('reproductionCoefficients.mat', 'c_coefficients')
