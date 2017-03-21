@@ -15,10 +15,10 @@ signalLength = 64*32;
 ak_weights = [5; 2];
 tk_locations = [12.5; 13];
 
-% initialise vector and add 
+% initialise vector and add diracs
 x_diracsStream = zeros(1,signalLength); 
-x_diracsStream(tk_locations(1)*resolution) = ak_weights(1);
-x_diracsStream(tk_locations(2)*resolution) = ak_weights(2);
+x_diracsStream(tk_locations(1)*resolution+1) = ak_weights(1);
+x_diracsStream(tk_locations(2)*resolution+1) = ak_weights(2);
 
 figure
 stem(x_diracsStream,'x')
@@ -72,8 +72,6 @@ end
 %% Apply annihilating filter method
 
 [tk_locations_est, ak_weights_est] = annihilatingFilterMethod(s_moments,true);
-
-tk_locations_est = tk_locations_est + 0.0156; % hack
 
 disp('Estimated Dirac values -')
 disp('Locations:')
