@@ -1,6 +1,7 @@
 %% Setup
 clc
 close all
+clear variables
 
 resolution = 64; maxTime = 32;
 signalLength = 64*32;
@@ -16,6 +17,7 @@ phi = zeros(1,signalLength);
 [phi_T, psi_T, xval] = wavefun('db4',6); 
 phi(1:length(phi_T))=phi_T;
 figure
+hold on
 plot(phi,'r')
 xlim([0,signalLength])
 xlabel('time (s/64)')
