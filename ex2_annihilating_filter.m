@@ -39,15 +39,18 @@ subplot(312)
 stem(h_annihilatingFilter,'x')
 ylabel('Annihilating Filter')
 
-% Plot convolution
+% Plot convolution - only middle two values need to be 0
 subplot(313)
 stem(y,'x');
 ylabel('Convolution')
-% set(ax,'yScale','log')
 
 %% Find locations
 
 tk_locations = roots(h_annihilatingFilter); % locations are roots of filter
+
+% Print location values
+disp('Locations:')
+disp(tk_locations.')
 
 %% Solve Vandermonde system to find weights
 
@@ -55,3 +58,7 @@ eqn_locationsMatrix = [ 1 1; tk_locations(1) tk_locations(2) ];
 eqn_tauVect2 = tau(1:K).';
 
 ak_weights = eqn_locationsMatrix \ eqn_tauVect2; % solve equation to find weights
+
+% Print weight values
+disp('Weights:')
+disp(ak_weights.')
