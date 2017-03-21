@@ -17,10 +17,10 @@ phi = zeros(1,signalLength);
 [phi_T, psi_T, xval] = wavefun('db4',6); 
 phi(1:length(phi_T))=phi_T;
 figure
-hold on
-plot(phi,'r')
-xlim([0,signalLength])
+plot(phi_T,'LineWidth',2)
+xlim([0 length(phi_T)])
 xlabel('time (s/64)')
+ylabel('db4 scaling function')
 
 %% Compute coefficients
 
@@ -35,7 +35,8 @@ t(2,:) = (0:signalLength-1)./64; % t^1
 t(3,:) = t(2,:).^2; % t^2
 t(4,:) = t(2,:).^3; % t^3
 
-% coefficient computation
+%% Compute coefficients
+
 c_coefficients = zeros(length(m_degree),length(n_numCoefficients));
 for mIndex = m_degree+1
     for nIndex = n_numCoefficients+1
@@ -48,6 +49,7 @@ for mIndex = m_degree+1
 end
 
 %% Reproduce the polynomials
+
 t_reproduced = zeros(length(m_degree),signalLength);
 for mIndex = m_degree+1
     figure
@@ -59,7 +61,7 @@ for mIndex = m_degree+1
         
         reproduction_contribution = c_coefficients(mIndex,nIndex) * phiShifted; % compute contribution at this m and n
         t_reproduced(mIndex,:) = t_reproduced(mIndex,:) + reproduction_contribution; % add to sum
-        plot(reproduction_contribution,'--')
+        plot(reproduction_contribution)
     end
     h1 = plot(t_reproduced(mIndex,:),'b','LineWidth',2);
     h2 = plot(t(mIndex,:),'r--','LineWidth',2);
@@ -68,3 +70,4 @@ for mIndex = m_degree+1
     xlabel('time (s/64)')
 end
  
+save('reporudctionCoefficients.mat', 'c_coefficients')
