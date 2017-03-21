@@ -15,21 +15,10 @@ signalLength = 64*32;
 phi = zeros(1,signalLength);
 [phi_T, psi_T, xval] = wavefun('db4',6); 
 phi(1:length(phi_T))=phi_T;
-figure(1)
+figure
 plot(phi,'r')
 xlim([0,signalLength])
-hold on
-line(xlim,[0,0],'Linestyle','--')
-
-%% Compute bi-orthonormal basis
-
-M_matrix = zeros(signalLength);
-for nIndex = 1:signalLength
-    shift = (nIndex-1); % find the shift
-    M_matrix(nIndex:end,nIndex) = phi(1:end-nIndex+1);
-    %I = M_matrix\M_matrix;
-    
-end
+xlabel('time (s/64)')
 
 %% Compute coefficients
 
@@ -44,36 +33,22 @@ t(2,:) = (0:signalLength-1)./64; % t^1
 t(3,:) = t(2,:).^2; % t^2
 t(4,:) = t(2,:).^3; % t^3
 
-figure(2)
-hold on
-xlim([0,signalLength/10]) % /by 10 to see plots clearly
-plot(t(1,:))
-plot(t(2,:))
-plot(t(3,:))
-plot(t(4,:))
-hold off
-
+% coefficient computation
 c_coefficients = zeros(length(m_degree),length(n_numCoefficients));
 for mIndex = m_degree+1
     for nIndex = n_numCoefficients+1
         shift = (nIndex-1) * resolution; % find the shift
         phiShifted = zeros(1,signalLength); % initialise phiShifted
         phiShifted((1 + shift):(support*resolution + shift)) = phi(1:support*resolution); % compute phiShifted
-        
-        % test code
-        if(dot(phi,phiShifted) ~= 0)
-            %fprintf('%i %i\n', mIndex, nIndex);
-        else
-            %fprintf('all good');
-        end
-        
-        c_coefficients(mIndex, nIndex) = dot(t(mIndex,:),phiShifted); % inner product to find c
+                
+        c_coefficients(mIndex, nIndex) = dot(t(mIndex,:),phiShifted)./resolution; % inner product to find c
     end
 end
 
+%% Reproduce the polynomials
 t_reproduced = zeros(length(m_degree),signalLength);
 for mIndex = m_degree+1
-    figure(mIndex+3)
+    figure
     hold on
     for nIndex = n_numCoefficients+1
         shift = (nIndex-1) * resolution; % find the shift
@@ -84,6 +59,10 @@ for mIndex = m_degree+1
         t_reproduced(mIndex,:) = t_reproduced(mIndex,:) + reproduction_contribution; % add to sum
         plot(reproduction_contribution,'--')
     end
-    plot(t_reproduced(mIndex,:),'b','LineWidth',2)
+    h1 = plot(t_reproduced(mIndex,:),'b','LineWidth',2);
+    h2 = plot(t(mIndex,:),'r--','LineWidth',2);
+    legend([h1 h2],{'Reconstruction', 'Actual'}, 'Location', 'northwest')
+    xlim([0 signalLength])
+    xlabel('time (s/64)')
 end
  
