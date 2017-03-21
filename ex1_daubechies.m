@@ -14,7 +14,7 @@ signalLength = 64*32;
 %% Compute and plot Daubechies scaling function
 
 phi = zeros(1,signalLength);
-[phi_T, psi_T, xval] = wavefun('db4',6); 
+[phi_T,~,~] = wavefun('db4',6); 
 phi(1:length(phi_T))=phi_T;
 figure
 plot(phi_T,'LineWidth',2)
@@ -24,8 +24,8 @@ ylabel('db4 scaling function')
 
 %% Compute coefficients
 
-firstZeroIndex = find(phi(2:end) == 0,1); % find first zero after position 1
-support = ceil(firstZeroIndex/resolution); % compute support
+firstZeroIndex = find(phi(2:end) < 10^-4,1); % find first zero after position 1
+support = 7; % support selected as 5 as values beyond 320 do not exceed 0.01
 
 m_degree = 0:3;
 n_numCoefficients = 0:32-support;
