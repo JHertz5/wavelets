@@ -5,8 +5,6 @@ clear variables
 
 load project_files_&_data/tau.mat
 
-[ tk_locations, ak_weights ] = annihilatingFilterMethod(tau, true)
-%{
 K = 2;
 N = size(tau,2)-1;
 
@@ -64,4 +62,3 @@ ak_weights = eqn_locationsMatrix \ eqn_tauVect2; % solve equation to find weight
 % Print weight values
 disp('Weights:')
 disp(ak_weights.')
-%}
