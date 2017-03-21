@@ -42,31 +42,28 @@ phi(1:length(phi_T))=phi_T;
 
 %% Sample signal using Daubechies scaling function
 
-firstZeroIndex = find(phi(2:end) == 0,1); % find first zero after position 1
-support = 7; %ceil(firstZeroIndex/resolution); % compute support
-
 m_degree = 0:3;
-n_numSamples = 32-support;
+n_numSamples = 32;
 
-y_samples = zeros(1, n_numSamples);
-for sampleIndex = 1:n_numSamples+1
+y_sampled = zeros(1, n_numSamples);
+for sampleIndex = 1:n_numSamples
     shift = (sampleIndex-1) * resolution; % find the shift
     phiShifted = zeros(1,signalLength); % initialise phiShifted
     phiShifted((1 + shift):(length(phi_T) + shift)) = phi_T; % compute phiShifted
-    phiShifted = phiShifted(1:signalLength); % 'crop' phiShifted
+    phiShifted = phiShifted(1:signalLength); % crop to signalLength
 
-    y_samples(sampleIndex) = dot(x_diracsStream,phiShifted);
+    y_sampled(sampleIndex) = dot(x_diracsStream,phiShifted);
 end
 
 % plot samples
 figure
-stem(y_samples)
+stem(y_sampled)
 
 %% Retrieve N+1 moments of signal
 
 s_moments = zeros(length(m_degree),1);
 for degreeIndex = m_degree+1
-    s_moments(degreeIndex) = dot(c_coefficients(degreeIndex,:),y_samples);
+    s_moments(degreeIndex) = dot(c_coefficients(degreeIndex,:),y_sampled);
 end
 
 %% Apply annihilating filter method

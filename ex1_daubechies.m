@@ -24,11 +24,8 @@ ylabel('db4 scaling function')
 
 %% Compute coefficients
 
-firstZeroIndex = find(phi(2:end) < 10^-4,1); % find first zero after position 1
-support = 7; % support selected as 5 as values beyond 320 do not exceed 0.01
-
 m_degree = 0:3;
-n_numCoefficients = 0:32-support;
+n_numCoefficients = 32;
 
 t = ones(4,signalLength); % t^0 and initialise rest of matrix
 t(2,:) = (0:signalLength-1)./64; % t^1
@@ -37,12 +34,13 @@ t(4,:) = t(2,:).^3; % t^3
 
 %% Compute coefficients
 
-c_coefficients = zeros(length(m_degree),length(n_numCoefficients));
+c_coefficients = zeros(length(m_degree),n_numCoefficients);
 for mIndex = m_degree+1
-    for nIndex = n_numCoefficients+1
+    for nIndex = 1:n_numCoefficients
         shift = (nIndex-1) * resolution; % find the shift
         phiShifted = zeros(1,signalLength); % initialise phiShifted
-        phiShifted((1 + shift):(support*resolution + shift)) = phi(1:support*resolution); % compute phiShifted
+        phiShifted((1 + shift):(length(phi_T) + shift)) = phi_T; % compute phiShifted
+        phiShifted = phiShifted(1:signalLength); % crop to signalLength
                 
         c_coefficients(mIndex, nIndex) = dot(t(mIndex,:),phiShifted)./resolution; % inner product to find c
     end
@@ -54,10 +52,11 @@ t_reproduced = zeros(length(m_degree),signalLength);
 for mIndex = m_degree+1
     figure
     hold on
-    for nIndex = n_numCoefficients+1
+    for nIndex = 1:n_numCoefficients
         shift = (nIndex-1) * resolution; % find the shift
         phiShifted = zeros(1,signalLength); % initialise phiShifted
-        phiShifted((1 + shift):(support*resolution + shift)) = phi(1:support*resolution); % compute phiShifted
+        phiShifted((1 + shift):(length(phi_T) + shift)) = phi_T; % compute phiShifted
+        phiShifted = phiShifted(1:signalLength); % crop to signalLength
         
         reproduction_contribution = c_coefficients(mIndex,nIndex) * phiShifted; % compute contribution at this m and n
         t_reproduced(mIndex,:) = t_reproduced(mIndex,:) + reproduction_contribution; % add to sum
