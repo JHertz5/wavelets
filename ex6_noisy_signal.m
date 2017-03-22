@@ -32,7 +32,7 @@ disp(ak_weights)
 
 %% Compute and plot Daubechies scaling function
 
-% N >= 2K-1 (p70)
+% N > 2K & N-1 -> N >= 2K-1
 % N = 2*(2)-1 = 3 
 % N+1 = 3+1 = 4 -> db4
 
@@ -66,12 +66,7 @@ for degreeIndex = m_degree+1
     s_moments(degreeIndex) = dot(c_coefficients(degreeIndex,:),y_sampled);
 end
 
-%% Apply annihilating filter method
+%% Add noise to s_moments
 
-[tk_locations_est, ak_weights_est] = annihilatingFilterMethod(s_moments,true);
-
-disp('Estimated Dirac values -')
-disp('Locations:')
-disp(tk_locations_est)
-disp('Weights:')
-disp(ak_weights_est)
+%epsilon_noiseComponent = sigma*randn;
+%s_noisyMoments = 
