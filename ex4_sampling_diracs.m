@@ -13,7 +13,7 @@ signalLength = 64*32;
 %% Create stream of Diracs
 
 ak_weights = [5; 2];
-tk_locations = [12.5; 13];
+tk_locations = [12.5; 23];
 
 % initialise vector and add diracs
 x_diracsStream = zeros(1,signalLength); 

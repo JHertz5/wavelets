@@ -11,7 +11,7 @@ signalLength = 64*32;
 %% Create stream of Diracs
 
 ak_weights = [5; 2];
-tk_locations = [12.5; 13];
+tk_locations = [12; 23];
 
 % initialise vector and add diracs
 x_diracsStream = zeros(1,signalLength); 
@@ -24,9 +24,9 @@ xlim([0 signalLength])
 
 disp('Original Dirac values -')
 disp('Locations:')
-disp(tk_locations)
+disp(tk_locations')
 disp('Weights:')
-disp(ak_weights)
+disp(ak_weights')
 
 %% Compute and plot Daubechies scaling function
 
@@ -93,11 +93,8 @@ end
 
 %% Add noise to s_moments
 
-disp('Check what the varying values of sigma should be')
-sigma = 1;
-epsilon_noiseComponent = sigma*randn(size(s_moments,1), size(s_moments,2));
+sigmas = s_moments./150; % setting standard deviation to be 10% of s_moments values
+epsilon_noiseComponent = sigmas.*randn(size(s_moments,1), size(s_moments,2));
 s_noisyMoments = s_moments + epsilon_noiseComponent;
 
-save('noisyMoments.mat', 's_noisyMoments')
-
-
+save('noisyMoments.mat', 's_noisyMoments', 'K', 'N', 'ak_weights', 'tk_locations')
