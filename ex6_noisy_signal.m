@@ -93,7 +93,7 @@ end
 
 %% Add noise to s_moments
 
-sigmas = s_moments./150; % setting standard deviation to be 10% of s_moments values
+sigmas = s_moments./1000; % setting standard deviation to be 10% of s_moments values
 epsilon_noiseComponent = sigmas.*randn(size(s_moments,1), size(s_moments,2));
 s_noisyMoments = s_moments + epsilon_noiseComponent;
 
