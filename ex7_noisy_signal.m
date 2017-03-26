@@ -26,26 +26,6 @@ end
  
 h_annihilatingFilter = V(:,end); % solve equation to find filter values
 
-%% Plot convolution
-%{
-y = conv(s_noisyMoments,h_annihilatingFilter);
-
-% Plot tau
-subplot(311)
-stem(s_noisyMoments,'x')
-ylabel('Noisy Moments')
-
-% Plot filter
-subplot(312)
-stem(h_annihilatingFilter,'x')
-ylabel('Annihilating Filter')
-
-% Plot convolution - only middle two values need to be 0
-subplot(313)
-stem(y,'x');
-ylabel('Convolution')
-%}
-
 %% Use annihilating filter to find locations and weights
 
 tk_locations_est = roots(h_annihilatingFilter); % locations are roots of filter
@@ -62,9 +42,6 @@ disp(tk_locations_est.')
 % Print weight values
 disp('Weights:')
 disp(ak_weights_est.')
-
-
-
 
 %% Perform Cadzow routine
 % iteration 1, using lambda from earlier
@@ -98,7 +75,7 @@ else
     disp('TOEPLITZ DIAG AVERAGER DOESNT WORK FOR THIS SIZE TOEPLITZ')
 end
 
-tau_momentsDenoised1 = [toeplitz_de1(1,3); toeplitz_de1(2,3); toeplitz_de1(3,3); toeplitz_de1(3,2); toeplitz_de1(3,1)];
+s_momentsDenoised1 = [toeplitz_de1(1,3); toeplitz_de1(2,3); toeplitz_de1(3,3); toeplitz_de1(3,2); toeplitz_de1(3,1)];
 
 %% Perform denoised Total Least-Squares approach to find annihilating filter
 
@@ -110,7 +87,7 @@ h_annihilatingFilter_de1 = V_de1(:,end); % solve equation to find filter values
 tk_locations_estCadzow1 = roots(h_annihilatingFilter_de1); % locations are roots of filter
 
 eqn_locationsMatrix = [ 1 1; tk_locations_estCadzow1(1) tk_locations_estCadzow1(2) ];
-eqn_tauVect2 = tau_momentsDenoised1(1:K);
+eqn_tauVect2 = s_momentsDenoised1(1:K);
 
 ak_weights_estCadzow1 = eqn_locationsMatrix \ eqn_tauVect2; % solve equation to find weights
 
@@ -124,14 +101,10 @@ disp(ak_weights_estCadzow1.')
 
 
 
-
-
-
-
 %% iteration 2+
 
-[U_de1, lambda_de1, V_de1] = svd(toeplitz_de1);
-diagLambda = diag(lambda_de1);
+[U_de1, lambda_de1_, V_de1] = svd(toeplitz_de1);
+diagLambda = diag(lambda_de1_);
 
 for index = 1:length(diagLambda)-K
     [noiseCoefficient, noiseIndex] = min(diagLambda);
@@ -141,7 +114,7 @@ end
 lambda_de2 = diag(diagLambda);
 toeplitz_de2 = U_de1*lambda_de2*V_de1';
 
-tau_momentsDenoised2 = [toeplitz_de2(1,3); toeplitz_de2(2,3); toeplitz_de2(3,3); toeplitz_de2(3,2); toeplitz_de2(3,1)];
+s_momentsDenoised2 = [toeplitz_de2(1,3); toeplitz_de2(2,3); toeplitz_de2(3,3); toeplitz_de2(3,2); toeplitz_de2(3,1)];
 
 %% Perform denoised Total Least-Squares approach to find annihilating filter
 
@@ -154,7 +127,7 @@ h_annihilatingFilter_de2 = V_de2(:,end); % solve equation to find filter values
 tk_locations_estCadzow2 = roots(h_annihilatingFilter_de2); % locations are roots of filter
 
 eqn_locationsMatrix = [ 1 1; tk_locations_estCadzow2(1) tk_locations_estCadzow2(2) ];
-eqn_tauVect2 = tau_momentsDenoised2(1:K);
+eqn_tauVect2 = s_momentsDenoised2(1:K);
 
 ak_weights_estCadzow2 = eqn_locationsMatrix \ eqn_tauVect2; % solve equation to find weights
 

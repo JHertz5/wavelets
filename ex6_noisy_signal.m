@@ -10,8 +10,8 @@ signalLength = 64*32;
 
 %% Create stream of Diracs
 
-ak_weights = [5; 2];
-tk_locations = [12; 23];
+ak_weights = [7; 4];
+tk_locations = [7.5; 23];
 
 % initialise vector and add diracs
 x_diracsStream = zeros(1,signalLength); 
@@ -95,6 +95,7 @@ end
 
 sigmas = s_moments./1000; % setting standard deviation to be 10% of s_moments values
 epsilon_noiseComponent = sigmas.*randn(size(s_moments,1), size(s_moments,2));
+% epsilon_noiseComponent = [2.5717 0.7993 1.0509 1.2784 -0.7450 -1.3755];
 s_noisyMoments = s_moments + epsilon_noiseComponent;
 
-save('noisyMoments.mat', 's_noisyMoments', 'K', 'N', 'ak_weights', 'tk_locations')
+save('noisyMoments.mat', 's_noisyMoments', 'K', 'N', 'ak_weights', 'tk_locations', 'sigmas')
