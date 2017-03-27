@@ -1,10 +1,10 @@
-function [ tk_locations, ak_weights  ] = annihilatingFilterMethod( tau_moments, showPlots )
+function [ h_annihilatingFilter, tk_locations, ak_weights, y  ] = annihilatingFilterMethod(tau_moments)
 %annihilatingFilterMethod
 % calcualte annihilating filter values for signal
 % and return locations and weights
 
 K = 2;
-N = size(tau_moments,1)-1;
+N = length(tau_moments)-1;
 
 %% Find annihilating filter by solving equation
 
@@ -23,25 +23,9 @@ eqn_hVect = eqn_tauMatrix \ -eqn_tauVect1;
 
 h_annihilatingFilter(2:end) = eqn_hVect; % solve equation to find filter values
 
-%% Plot convolution
+%% Find convolution
 
 y = conv(tau_moments,h_annihilatingFilter);
-if showPlots
-    % Plot tau
-    subplot(311)
-    stem(tau_moments,'x')
-    ylabel('Tau')
-
-    % Plot filter
-    subplot(312)
-    stem(h_annihilatingFilter,'x')
-    ylabel('Annihilating Filter')
-
-    % Plot convolution - only middle two values need to be 0
-    subplot(313)
-    stem(y,'x');
-    ylabel('Convolution')
-end
 
 %% Find locations
 
@@ -57,10 +41,6 @@ eqn_locationsMatrix = [ 1 1; tk_locations(1) tk_locations(2) ];
 eqn_tauVect2 = tau_moments(1:K);
 
 ak_weights = eqn_locationsMatrix \ eqn_tauVect2; % solve equation to find weights
-
-% Print weight values
-%disp('Weights:')
-%disp(ak_weights.')
 
 end
 

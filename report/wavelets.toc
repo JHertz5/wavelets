@@ -1,0 +1,25 @@
+\select@language {british}
+\contentsline {section}{\numberline {1}Strang-Fix Conditions}{3}
+\contentsline {subsection}{\numberline {1.1}Exercise 1}{3}
+\contentsline {subsection}{\numberline {1.2}Exercise 2}{5}
+\contentsline {section}{\numberline {2}The Annihilating Filter Method}{5}
+\contentsline {subsection}{\numberline {2.1}Exercise 3}{5}
+\contentsline {section}{\numberline {3}Sampling Diracs}{6}
+\contentsline {subsection}{\numberline {3.1}Exercise 4}{6}
+\contentsline {subsection}{\numberline {3.2}Exercise 5}{8}
+\contentsline {section}{\numberline {4}Reconstruction in the Presence of Noise}{9}
+\contentsline {subsection}{\numberline {4.1}Exercise 6}{9}
+\contentsline {subsection}{\numberline {4.2}Exercise 7}{9}
+\contentsline {section}{\numberline {A}Ex1}{10}
+\contentsline {section}{\numberline {B}Ex2}{11}
+\contentsline {section}{\numberline {C}Ex3}{13}
+\contentsline {section}{\numberline {D}annihilatingFilterMethod.m}{14}
+\contentsline {section}{\numberline {E}Ex4}{14}
+\contentsline {section}{\numberline {F}Ex5}{16}
+\contentsline {section}{\numberline {G}Ex6}{17}
+\contentsline {section}{\numberline {H}momentsGenerator.m}{18}
+\contentsline {section}{\numberline {I}Ex7 with No Enhancements}{19}
+\contentsline {section}{\numberline {J}Ex7 with LTS}{20}
+\contentsline {section}{\numberline {K}annihilatingFilterMethodTLS.m}{21}
+\contentsline {section}{\numberline {L}Ex7 with LTS and Cadzow}{22}
+\contentsline {section}{\numberline {M}annihilatingFilterMethodCadzow.m}{22}

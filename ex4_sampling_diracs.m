@@ -9,6 +9,7 @@ K = 2;
 
 resolution = 64; maxTime = 32;
 signalLength = 64*32;
+time = (1:signalLength)./resolution;
 
 %% Create stream of Diracs
 
@@ -21,8 +22,13 @@ x_diracsStream(tk_locations(1)*resolution+1) = ak_weights(1);
 x_diracsStream(tk_locations(2)*resolution+1) = ak_weights(2);
 
 figure
-stem(x_diracsStream,'x')
-xlim([0 signalLength])
+subplot(2,1,1)
+stem(time,x_diracsStream,'x')
+axis tight
+ylabel('amplitude')
+xlabel('time /s')
+title('Original Dirac Stream')
+hold on
 
 disp('Original Dirac values -')
 disp('Locations:')
@@ -56,8 +62,8 @@ for sampleIndex = 1:n_numSamples
 end
 
 % plot samples
-figure
-stem(y_sampled)
+%figure
+%stem(y_sampled)
 
 %% Retrieve N+1 moments of signal
 
@@ -68,9 +74,29 @@ end
 
 %% Apply annihilating filter method
 
-[tk_locations_est, ak_weights_est] = annihilatingFilterMethod(s_moments,true);
+[h, tk_locations_est, ak_weights_est,y] = annihilatingFilterMethod(s_moments);
 
 disp('Estimated Dirac values -')
+disp('Locations:')
+disp(tk_locations_est)
+disp('Weights:')
+disp(ak_weights_est)
+
+% initialise vector and add diracs
+x_diracsStream_est = zeros(1,signalLength); 
+x_diracsStream_est(uint32(tk_locations_est(1)*resolution+1)) = ak_weights_est(1);
+x_diracsStream_est(uint32(tk_locations_est(2)*resolution+1)) = ak_weights_est(2);
+
+%% Display and Plot Results
+
+subplot(2,1,2)
+stem(time,x_diracsStream_est,'x')
+axis tight
+ylabel('amplitude')
+xlabel('time /s')
+title('Reconstruction of Dirac Stream')
+
+disp('Original Dirac values -')
 disp('Locations:')
 disp(tk_locations_est)
 disp('Weights:')
